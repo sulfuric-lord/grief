@@ -21,7 +21,7 @@ level_map = [
 tilemap.generate_colliders(level_map)
 
 f_sprite = pygame.image.load("src/data/sprites/character/f_idle.png")
-player = PhysicalObject(0, 0, 32, 64, pygame.transform.scale(f_sprite, (32, 64)))
+player = PhysicalObject(0, 0, 32, 64, 4, pygame.transform.scale(f_sprite, (32, 64)))
 
 
 
@@ -33,19 +33,26 @@ class Level1:
         surface.fill((0, 0, 0))
 
         keys = pygame.key.get_pressed()
-        dx = 0
+
+        direction = 0
+
         if keys[pygame.K_d]:
-            dx = 2
+            direction = 1
         elif keys[pygame.K_a]:
-            dx = -2
-        if keys[pygame.K_SPACE]:
+            direction = -1
+        elif keys[pygame.K_SPACE]:
             player.jump()
-        if keys[pygame.K_c]:
-            self.gravity = not self.gravity
-            player.dy = 0
+
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    self.gravity = not self.gravity
+                    player.dy = 0
 
         if self.gravity:
-            player.apply_gravity()  
+            player.apply_gravity()
+
+        dx = direction * player.speed
         player.move(dx, player.dy, tilemap.collidable_tiles)
 
         player.render(surface)
