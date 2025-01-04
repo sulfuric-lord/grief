@@ -1,16 +1,13 @@
 import pygame
-from src.scenes import level1, level2
-from cfg import *
+from src.scenes import level1, level2, main_menu
+import cfg
 
 pygame.init()
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
-game_surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 clock = pygame.time.Clock()
 
-
-scenes = [level1.Level1(), level2.Level2()]
-current_scene = 0
+scenes = [level1.Level1(), main_menu.Main_menu()]
+current_scene = 1
 
 running = True
 while running:
@@ -24,9 +21,9 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
-    scenes[current_scene].render(game_surface, events)
-    scaled_surface = pygame.transform.scale(game_surface, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    screen.blit(scaled_surface, (0, 0))
+    scenes[current_scene].render(cfg.game_surface, events)
+    scaled_surface = pygame.transform.scale(cfg.game_surface, (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT))
+    cfg.screen.blit(scaled_surface, (0, 0))
 
     pygame.display.flip()
     clock.tick(60)
