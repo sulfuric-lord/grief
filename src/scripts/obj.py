@@ -3,7 +3,7 @@ from cfg import *
 
 
 class PhysicalObject:
-    def __init__(self, x, y, width, height, sprite=None):
+    def __init__(self, x, y, width, height, speed, sprite=None):
         self.gravity = 1
         self.rect = pygame.Rect(x, y, width, height)
         self.sprite = sprite
@@ -13,6 +13,7 @@ class PhysicalObject:
             self.sprite_pos = (self.rect.x, self.rect.bottom - sprite_height)
         else:
             self.sprite_pos = (self.rect.x, self.rect.y)
+        self.speed = speed
         self.dy = 0 
         self.on_ground = False
         self.state = 'idle'
@@ -43,18 +44,18 @@ class PhysicalObject:
 
     def apply_gravity(self):
         if not self.on_ground:
-            self.dy = int(self.gravity)
+            self.dy += int(self.gravity)
             if self.gravity < 9:
                 self.gravity += 0.1
         else:
-            self.gravity = 1
+            self.gravity = 0
             if self.state != 'jump':
                 self.dy = 0
 
     def jump(self):
-        self.change_state('jump')
+        self.state = 'jump'
         if self.on_ground:
-            self.dy = -30
+            self.dy = -10
 
     def change_state(self, state):
         self.state = state
